@@ -1,14 +1,11 @@
-import React from 'react';
-import {View, StyleSheet, Text } from 'react-native'
+import { View, Text, StyleSheet} from 'react-native'
 
-export default function Cart() {
- return (
-   <View style={styles.container} >
-    <Text>
-      salve
-    </Text>
-   </View >
- );
+export default function Cart(){
+  return(
+    <View style={styles.container}>
+      <Text>Pagina Carrinho</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
