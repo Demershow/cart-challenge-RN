@@ -1,10 +1,15 @@
-import React from 'react';
-import { useState } from 'react';
-import { View, StyleSheet, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native'
+import { useState, useContext } from 'react'
+import { View, Text, StyleSheet, SafeAreaView, FlatList, TouchableOpacity} from 'react-native'
 
-import {Feather} from "@expo/vector-icons"
+import { Feather } from '@expo/vector-icons'
+import Product from '../../Components/Products'
+import { useNavigation } from '@react-navigation/native'
+import { CartContext } from '../../Contexts/CartContext'
 
-export default function Home() {
+export default function Home(){
+  const { cart } = useContext(CartContext)
+
+  const navigation = useNavigation();
   const [products, setProducts] = useState([
     {
       id: '1',
@@ -32,21 +37,31 @@ export default function Home() {
       price: 6.00
     },
   ])
-  return (
-    <SafeAreaView style={styles.container} >
+
+  return(
+    <SafeAreaView style={styles.container}>
       <View style={styles.cartContent}>
-        <Text style={styles.title }>
-          Lista de produtos
-        </Text>
-        <TouchableOpacity style={styles.cartbutton }>
+        <Text style={styles.title}>Lista de produtos</Text>
+        <TouchableOpacity 
+        style={styles.cartButton} 
+        onPress={ () => navigation.navigate("Cart")}
+        >
           <View style={styles.dot}>
-          <Text style={styles.dotText}>3</Text>
+            <Text style={styles.dotText}>
+              {cart?.length}
+            </Text>
           </View>
-          <Feather name='shopping-cart' size={30} color="#000"/>
+          <Feather name="shopping-cart" size={30} color="#000" />
         </TouchableOpacity>
       </View>
-    </SafeAreaView >
-  );
+      <FlatList
+        style={styles.list}
+        data={products}
+        keyExtractor={ (item) => String(item.id) }
+        renderItem={ ({ item }) => <Product data={item} /> }
+      />
+    </SafeAreaView>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -56,7 +71,7 @@ const styles = StyleSheet.create({
     paddingEnd: 14,
     paddingStart: 14
   },
-  cartContent:{
+  cartContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -73,7 +88,7 @@ const styles = StyleSheet.create({
     justifyConten: "center",
     width: 20,
     height: 20,
-    borderRadius: 10,
+    borderRadius: 12,
     position: "absolute",
     zIndex: 99,
     bottom: -2,
